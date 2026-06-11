@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dragon Ball DB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+
+  <!-- PANTALLA DE INICIO -->
+  <div id="pantalla-inicio">
+    <div class="tarjeta-inicio">
+      <div class="logo-grande">Dragon<span>Ball</span></div>
+      <p class="subtitulo-inicio">Base de Datos del Universo DB</p>
+      <label class="etiqueta-campo">Clave de Acceso</label>
+      <input
+        type="password"
+        id="campo-clave"
+        class="campo-texto"
+        placeholder="Escribe cualquier texto para ingresar..."
+      />
+      <p class="texto-ayuda">Ingresa cualquier texto para activar la sesión.</p>
+      <button class="boton-principal" onclick="entrarApp()">Ingresar →</button>
+      <p id="error-inicio" class="mensaje-error" style="display:none;"></p>
+    </div>
+  </div>
+
+  <!-- APP PRINCIPAL -->
+  <div id="app-principal" style="display:none;">
+
+    <header class="cabecera">
+      <div class="logo-grande">Dragon<span>Ball</span></div>
+      <p class="subtitulo-cabecera">Base de Datos del Universo DB</p>
+      <button class="boton-salir" onclick="cerrarSesion()">Cerrar sesión</button>
+    </header>
+
+    <!-- MENÚ DE PESTAÑAS -->
+    <nav class="menu-pestanas">
+      <button class="pestana activa" onclick="mostrarSeccion('personajes', this)">👥 Personajes</button>
+      <button class="pestana" onclick="mostrarSeccion('planetas', this)">🪐 Planetas</button>
+      <button class="pestana" onclick="mostrarSeccion('transformaciones', this)">✨ Transformaciones</button>
+    </nav>
+
+    <main class="contenido-principal">
+
+      <!-- SECCIÓN PERSONAJES -->
+      <div id="seccion-personajes" class="seccion activa">
+
+        <div class="encabezado-seccion">
+          <h2 class="titulo-seccion">Guerreros del Universo</h2>
+          <span id="contador-personajes" class="contador"></span>
+        </div>
+
+        <!-- Buscador -->
+        <div class="fila-busqueda">
+          <input
+            type="text"
+            id="campo-busqueda"
+            class="campo-texto"
+            placeholder="Buscar por nombre: Goku, Vegeta..."
+          />
+          <button class="boton-principal" onclick="buscarPersonaje()">Buscar</button>
+          <button class="boton-secundario" onclick="limpiarBusqueda()">Limpiar</button>
+        </div>
+
+        <!-- Filtros por raza -->
+        <div class="bloque-filtros">
+          <span class="etiqueta-filtro">Raza:</span>
+          <div id="filtros-raza" class="fila-filtros">
+            <button class="pestana activa" onclick="filtrarPorRaza('', this)">Todos</button>
+            <button class="pestana" onclick="filtrarPorRaza('Saiyan', this)">⚡ Saiyan</button>
+            <button class="pestana" onclick="filtrarPorRaza('Namekian', this)">💚 Namekiano</button>
+            <button class="pestana" onclick="filtrarPorRaza('Human', this)">🧑 Humano</button>
+            <button class="pestana" onclick="filtrarPorRaza('Android', this)">🤖 Androide</button>
+            <button class="pestana" onclick="filtrarPorRaza('Frieza Race', this)">👾 Raza Frieza</button>
+            <button class="pestana" onclick="filtrarPorRaza('Majin', this)">🍬 Majin</button>
+          </div>
+        </div>
+
+        <!-- Lista de personajes -->
+        <div id="lista-personajes" class="lista-tarjetas"></div>
+        <div id="paginacion-personajes" class="paginacion"></div>
+
+      </div>
+
+      <!-- SECCIÓN PLANETAS -->
+      <div id="seccion-planetas" class="seccion">
+
+        <div class="encabezado-seccion">
+          <h2 class="titulo-seccion">Exploración de Planetas</h2>
+          <span id="contador-planetas" class="contador"></span>
+        </div>
+
+        <!-- Filtros de estado -->
+        <div class="bloque-filtros">
+          <span class="etiqueta-filtro">Estado:</span>
+          <div id="filtros-planetas" class="fila-filtros">
+            <button class="pestana activa" onclick="filtrarPlanetas('todos', this)">🌌 Todos</button>
+            <button class="pestana" onclick="filtrarPlanetas('vivos', this)">🌍 Habitables</button>
+            <button class="pestana" onclick="filtrarPlanetas('destruidos', this)">💥 Destruidos</button>
+          </div>
+        </div>
+
+        <div id="lista-planetas" class="lista-tarjetas" style="margin-top:1.5rem;"></div>
+        <div id="paginacion-planetas" class="paginacion"></div>
+
+      </div>
+
+      <!-- SECCIÓN TRANSFORMACIONES -->
+      <div id="seccion-transformaciones" class="seccion">
+
+        <div class="encabezado-seccion">
+          <h2 class="titulo-seccion">Transformaciones y Evoluciones</h2>
+          <span id="contador-transformaciones" class="contador"></span>
+        </div>
+
+        <!-- Buscador de transformaciones -->
+        <div class="fila-busqueda">
+          <input
+            type="text"
+            id="campo-busqueda-trans"
+            class="campo-texto"
+            placeholder="Buscar: Super Saiyan, Ultra Instinct..."
+          />
+          <button class="boton-principal" onclick="buscarTransformacion()">Buscar</button>
+          <button class="boton-secundario" onclick="limpiarBusquedaTrans()">Limpiar</button>
+        </div>
+
+        <div id="lista-transformaciones" class="lista-tarjetas"></div>
+        <div id="paginacion-transformaciones" class="paginacion"></div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODAL DE PERSONAJE -->
+  <div id="modal-personaje" class="fondo-modal" style="display:none;" onclick="cerrarModal(event)">
+    <div id="contenido-modal" class="cuerpo-modal"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
